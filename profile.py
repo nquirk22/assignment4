@@ -40,89 +40,18 @@ for i in range(14):
   
   if i == 0:
     node = request.XenVM("head")
-    node.routable_control_ip = "true"
-    
-    # Create /software shared folder
-    node.addService(pg.Execute(shell="sh", command="sudo mkdir -m 755 /software"))
-    node.addService(pg.Execute(shell="sh", command="sudo mkdir /scratch"))
-
-    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/install_mpi.sh"))
-    
-    # Enable and start nfs service
-    node.addService(pg.Execute(shell="sh", command="sudo systemctl enable nfs-server.service"))
-    node.addService(pg.Execute(shell="sh", command="sudo systemctl start nfs-server.service"))
-    
-    # Add compute nodes to /etc/exports
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.4(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.5(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.6(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.7(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.8(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.9(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.10(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.11(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.12(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.13(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.14(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '/software 192.168.1.15(rw,sync,no_root_squash)' >> /etc/exports\""))
-    node.addService(pg.Execute(shell="sh", command="sudo exportfs -a"))
-
-    # Mount /scratch folder hosted on "storage"
-    node.addService(pg.Execute(shell="sh", command="sudo mount 192.168.1.3:/scratch /scratch"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '192.168.1.3:/scratch /scratch nfs defaults 0 0' >> /etc/fstab\""))
-    
-    
-    # Install MPI
-    node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/install_mpi.sh"))
+    node.routable_control_ip = "true"    
     
   elif i == 1:
     node = request.XenVM("metadata")
 
   elif i == 2:
-    node = request.XenVM("storage")
-
-    # Create /scratch shared folder
-    node.addService(pg.Execute(shell="sh", command="sudo mkdir -m 755 /scratch"))
-
-    # Enable and start nfs service
-    node.addService(pg.Execute(shell="sh", command="sudo systemctl enable nfs-server.service"))
-    node.addService(pg.Execute(shell="sh", command="sudo systemctl start nfs-server.service"))
-
-    # Add head node to /etc/exports   
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.1(rw,sync,no_root_squash)' >> /etc/exports"))
-    # Add compute nodes to /etc/exports    
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.4(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.5(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.6(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.7(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.8(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.9(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.10(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.11(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.12(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.13(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.14(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c echo '/scratch 192.168.1.15(rw,sync,no_root_squash)' >> /etc/exports"))
-    node.addService(pg.Execute(shell="sh", command="sudo exportfs -a"))
+    node = request.XenVM("storage")   
 
   else:
     node = request.XenVM("compute-" + str(i-2))
     node.cores = 4
-    node.ram = 4096
-    node.addService(pg.Execute(shell="sh", command="sudo mkdir /scratch"))
-    node.addService(pg.Execute(shell="sh", command="sudo mkdir /software"))
-    
-    # Mount /scratch folder hosted on "storage"
-    node.addService(pg.Execute(shell="sh", command="sudo mount 192.168.1.3:/scratch /scratch"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '192.168.1.3:/scratch /scratch nfs defaults 0 0' >> /etc/fstab\""))
-
-    # Mount /software folder hosted on "head"
-    node.addService(pg.Execute(shell="sh", command="sudo mount 192.168.1.1:/software /software"))
-    node.addService(pg.Execute(shell="sh", command="sudo sh -c \"echo '192.168.1.1:/software /software nfs defaults 0 0' >> /etc/fstab\""))
-
-    # Add MPI to PATH
-    node.addService(pg.Execute(shell="sh", command="sudo echo 'export PATH=/software:$PATH' >> ~/.bashrc"))
-    node.addService(pg.Execute(shell="sh", command="source ~/.bashrc"))
+    node.ram = 4096   
     
   node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:CENTOS7-64-STD"
   
@@ -139,6 +68,64 @@ for i in range(14):
   node.addService(pg.Execute(shell="sh", command="sudo -H -u nq666287 bash -c '/local/repository/ssh_setup.sh'"))
  
   node.addService(pg.Execute(shell="sh", command="sudo su nq666287 -c 'cp /local/repository/source/* /users/nq666287'"))
+  
+  if i == 0: # Head
+    # Create /software shared folder
+    node.addService(pg.Execute(shell="sh", command="sudo mkdir -m 755 /software"))
+    node.addService(pg.Execute(shell="sh", command="sudo mkdir /scratch"))
+    
+    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/install_mpi.sh"))
+    
+    # Enable and start nfs service
+    node.addService(pg.Execute(shell="sh", command="sudo systemctl enable nfs-server.service"))
+    node.addService(pg.Execute(shell="sh", command="sudo systemctl start nfs-server.service"))
+    
+    # Delete /etc/exports and copy new    
+    node.addService(pg.Execute(shell="sh", command="sudo rm /etc/exports"))
+    node.addService(pg.Execute(shell="sh", command="sudo cp /local/repository/exports_head /etc/exports"))
+    node.addService(pg.Execute(shell="sh", command="sudo chmod 777 /etc/exports"))
+    node.addService(pg.Execute(shell="sh", command="sudo exportfs -a"))
+    
+    # Mount /scratch folder hosted on "storage"
+    node.addService(pg.Execute(shell="sh", command="sudo mount 192.168.1.3:/scratch /scratch"))
+    node.addService(pg.Execute(shell="sh", command="sudo su nq666287 -c \"echo '192.168.1.3:/scratch /scratch nfs defaults 0 0' >> /etc/fstab\""))
+    
+    
+    # Install MPI
+    node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/install_mpi.sh"))
+    
+  if i == 2: # Storage
+    # Create /scratch shared folder
+    node.addService(pg.Execute(shell="sh", command="sudo mkdir -m 755 /scratch"))
+    
+    # Enable and start nfs service
+    node.addService(pg.Execute(shell="sh", command="sudo systemctl enable nfs-server.service"))
+    node.addService(pg.Execute(shell="sh", command="sudo systemctl start nfs-server.service"))
+    
+    
+    # Delete /etc/exports and copy new    
+    node.addService(pg.Execute(shell="sh", command="sudo rm /etc/exports"))
+    node.addService(pg.Execute(shell="sh", command="sudo cp /local/repository/exports_storage /etc/exports"))
+    node.addService(pg.Execute(shell="sh", command="sudo chmod 777 /etc/exports"))
+    node.addService(pg.Execute(shell="sh", command="sudo exportfs -a"))
+    
+  if i > 2: # Compute Nodes
+    node.addService(pg.Execute(shell="sh", command="sudo mkdir /scratch"))
+    node.addService(pg.Execute(shell="sh", command="sudo mkdir /software"))
+    
+    # Mount /scratch folder hosted on "storage"
+    node.addService(pg.Execute(shell="sh", command="sudo mount 192.168.1.3:/scratch /scratch"))
+    node.addService(pg.Execute(shell="sh", command="sudo su nq666287 -c \"echo '192.168.1.3:/scratch /scratch nfs defaults 0 0' >> /etc/fstab\""))
+
+    # Mount /software folder hosted on "head"
+    node.addService(pg.Execute(shell="sh", command="sudo mount 192.168.1.1:/software /software"))
+    node.addService(pg.Execute(shell="sh", command="sudo su nq666287 -c \"echo '192.168.1.1:/software /software nfs defaults 0 0' >> /etc/fstab\""))
+
+    # Add MPI to PATH
+    node.addService(pg.Execute(shell="sh", command="sudo echo 'export PATH=/software:$PATH' >> ~/.bashrc"))
+    node.addService(pg.Execute(shell="sh", command="source ~/.bashrc"))
+      
+      
     
   
   
