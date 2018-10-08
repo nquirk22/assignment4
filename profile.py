@@ -124,7 +124,7 @@ for i in range(14):
     node.addService(pg.Execute(shell="sh", command="sudo echo 'export PATH=/software:$PATH' >> ~/.bashrc"))
     node.addService(pg.Execute(shell="sh", command="source ~/.bashrc"))
     
-    node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:CENTOS7-64-STD"
+  node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:CENTOS7-64-STD"
   
   iface = node.addInterface("if" + str(i))
   iface.component_id = "eth1"
