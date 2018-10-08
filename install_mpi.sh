@@ -7,8 +7,8 @@ cd openmpi-3.1.2
 sudo ./configure --prefix=/software
 sudo make
 sudo make all install
-echo "export PATH='$PATH:/opt/openmpi/3.1.2/bin'" >> /users/nq666287/.bashrc
-echo "export LD_LIBRARY_PATH='$LD_LIBRARY_PATH:/opt/openmpi/3.1.2/lib/'" >> /users/nq666287/.bashrc
+echo "export PATH='$PATH:/software'" >> /users/nq666287/.bashrc
+echo "export LD_LIBRARY_PATH='$LD_LIBRARY_PATH:/software'" >> /users/nq666287/.bashrc
 cd ..
 sudo rm -Rf openmpi-3.1.2
 sudo rm -Rf openmpi-3.1.2.tar.gz
