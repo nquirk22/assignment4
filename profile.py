@@ -72,9 +72,7 @@ for i in range(14):
   if i == 0: # Head
     # Create /software shared folder
     node.addService(pg.Execute(shell="sh", command="sudo mkdir -m 755 /software"))
-    node.addService(pg.Execute(shell="sh", command="sudo mkdir /scratch"))
-    
-    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/install_mpi.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo mkdir /scratch"))   
     
     # Enable and start nfs service
     node.addService(pg.Execute(shell="sh", command="sudo systemctl enable nfs-server.service"))
@@ -93,6 +91,7 @@ for i in range(14):
     
     # Install MPI
     node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/install_mpi.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/install_mpi.sh"))
     
   if i == 2: # Storage
     # Create /scratch shared folder
