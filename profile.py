@@ -111,6 +111,8 @@ for i in range(14):
   if i > 2: # Compute Nodes
     node.addService(pg.Execute(shell="sh", command="sudo mkdir /scratch"))
     node.addService(pg.Execute(shell="sh", command="sudo mkdir /software"))
+    node.addService(pg.Execute(shell="sh", command="sudo chmod 777 /scratch"))
+    node.addService(pg.Execute(shell="sh", command="sudo chmod 777 /software"))
     
     # Mount /scratch folder hosted on "storage"
     node.addService(pg.Execute(shell="sh", command="sudo mount 192.168.1.3:/scratch /scratch"))
