@@ -60,12 +60,12 @@ for i in range(14):
   iface.addAddress(pg.IPv4Address(prefixForIP + str(i + 1), "255.255.255.0"))
   link.addInterface(iface)
   
-  node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/passwordless.sh"))
-  node.addService(pg.Execute(shell="sh", command="sudo /local/repository/passwordless.sh"))  
+  node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/scripts/passwordless.sh"))
+  node.addService(pg.Execute(shell="sh", command="sudo /local/repository/scripts/passwordless.sh"))  
   
   # This code segment is added per Benjamin Walker's solution to address the StrictHostKeyCheck issue of ssh
-  node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/ssh_setup.sh"))
-  node.addService(pg.Execute(shell="sh", command="sudo -H -u nq666287 bash -c '/local/repository/ssh_setup.sh'"))
+  node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/scripts/ssh_setup.sh"))
+  node.addService(pg.Execute(shell="sh", command="sudo -H -u nq666287 bash -c '/local/repository/scripts/ssh_setup.sh'"))
  
   node.addService(pg.Execute(shell="sh", command="sudo su nq666287 -c 'cp /local/repository/source/* /users/nq666287'"))
   
@@ -90,8 +90,8 @@ for i in range(14):
     
     
     # Install MPI
-    node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/install_mpi.sh"))
-    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/install_mpi.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo chmod 755 /local/repository/scripts/install_mpi.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo /local/repository/scripts/install_mpi.sh"))
     
   if i == 2: # Storage
     # Create /scratch shared folder
@@ -121,8 +121,8 @@ for i in range(14):
     node.addService(pg.Execute(shell="sh", command="sudo su nq666287 -c \"echo '192.168.1.1:/software /software nfs defaults 0 0' >> /etc/fstab\""))
 
     # Add MPI to PATH
-    node.addService(pg.Execute(shell="sh", command="sudo echo 'export PATH=/software:$PATH' >> ~/.bashrc"))
-    node.addService(pg.Execute(shell="sh", command="source ~/.bashrc"))
+    node.addService(pg.Execute(shell="sh", command="sudo chmod 777 /local/repository/scripts/mpi_path_setup.sh"))
+    node.addService(pg.Execute(shell="sh", command="sudo -H -u nq666287 bash -c '/local/repository/scripts/mpi_path_setup.sh'"))
       
       
     
